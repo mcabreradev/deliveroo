@@ -1,9 +1,6 @@
 <template>
   <div>
-    <a
-      class="uk-button uk-button-primary uk-margin"
-      @click="$router.go(-1)"
-    >
+    <a class="uk-button uk-button-primary uk-margin" @click="$router.go(-1)">
       <span uk-icon="arrow-left" /> go back
     </a>
 
@@ -23,25 +20,30 @@
                 <p>{{ dish.description }}</p>
               </div>
               <div class="uk-card-footer">
-                <button
-                  class="uk-button uk-button-primary"
-                >
+                <button class="uk-button uk-button-primary" @click="addToCart(dish)">
                   Add to cart
                 </button>
               </div>
             </div>
           </div>
         </div>
-        <div class="uk-width-expand@m" />
+        <div class="uk-width-expand@m">
+          <Cart />
+        </div>
       </div>
     </client-only>
   </div>
 </template>
 
 <script>
+import { mapMutations } from 'vuex'
+import Cart from '~/components/Cart.vue'
 import restaurantQuery from '~/apollo/queries/restaurant/restaurant'
 
 export default {
+  components: {
+    Cart
+  },
   data () {
     return {
       restaurant: Object
@@ -55,6 +57,12 @@ export default {
         return { id: this.$route.params.id }
       }
     }
+  },
+  methods: {
+    ...mapMutations({
+      addToCart: 'cart/add',
+      removeFromCart: 'cart/remove'
+    })
   }
 }
 </script>
